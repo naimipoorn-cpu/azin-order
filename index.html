@@ -1,1 +1,218 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#37502F">
+<title>ثبت سفارش عمده ادویه</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#FBF6EC;--ink:#2B1D0E;--gold:#D99A1B;--gold2:#B87E10;
+  --green:#37502F;--green2:#4F6B4A;--line:#DED0AC;--paper:#FFFDF8;
+  --danger:#A33A2B;--ok:#2F6B45;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:'Vazirmatn',sans-serif;line-height:1.7}
+.wrap{max-width:680px;margin:auto;padding:0 20px 60px}
+header{padding:34px 0 24px;border-bottom:2px solid var(--ink);margin-bottom:25px}
+.shopname{font-size:15px;color:var(--gold2);font-weight:700;margin-bottom:5px}
+h1{font-size:29px;font-weight:800;margin:0 0 8px;line-height:1.35}
+header p{margin:0;color:#6B5A3E;font-size:14px}
+.section-title{font-size:14px;font-weight:800;color:var(--green);margin:28px 0 13px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+.field{margin-bottom:14px}
+label{display:block;font-size:13px;font-weight:700;color:#6B5A3E;margin-bottom:6px}
+input,textarea{
+  width:100%;font:inherit;font-size:15px;padding:12px 14px;border:1.5px solid var(--ink);
+  border-radius:9px;background:var(--paper);color:var(--ink);outline:none
+}
+input:focus,textarea:focus{border-color:var(--green);box-shadow:0 0 0 3px #37502F18}
+textarea{min-height:210px;resize:vertical;line-height:2;font-size:16px}
+.required{color:var(--danger)}
+.sub{font-size:12px;color:#8A7A5C;margin-top:5px}
+.notice{
+  background:#F2E8CF;border:1px solid var(--line);border-radius:9px;padding:11px 13px;
+  font-size:12.5px;color:#5F4D32;margin-top:8px
+}
+.counter{text-align:left;font-size:11px;color:#8A7A5C;margin-top:4px}
+.send-btn{
+  width:100%;margin-top:22px;padding:16px;background:var(--green);color:var(--cream);
+  border:0;border-radius:10px;font:inherit;font-size:16px;font-weight:800;cursor:pointer
+}
+.send-btn:hover{background:var(--green2)}
+.send-btn:disabled{background:#B8AF9C;cursor:not-allowed}
+.hint{text-align:center;font-size:12px;color:#8A7A5C;margin-top:9px}
+.status{display:none;margin-top:12px;padding:10px 12px;border-radius:8px;font-size:13px}
+.status.error{display:block;background:#F8E7E4;color:var(--danger)}
+.status.ok{display:block;background:#E8F2EA;color:var(--ok)}
+.small-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:480px){.small-row{grid-template-columns:1fr}h1{font-size:26px}}
 
+/* تزئینات متحرک ادویه و زعفران */
+.spice-float{position:fixed;z-index:0;pointer-events:none;opacity:.42;filter:drop-shadow(0 2px 3px rgba(43,29,14,.08));font-size:28px;animation:spiceDrift 5s ease-in-out infinite}
+.spice-float.s1{top:110px;left:10px}.spice-float.s2{top:300px;right:8px;animation-delay:-1.5s}.spice-float.s3{bottom:115px;left:14px;animation-delay:-3s}.spice-float.s4{bottom:35px;right:15px;animation-delay:-4s}
+.spice-float .leaf{display:inline-block;font-size:20px;animation:leafSpin 6s linear infinite}
+@keyframes spiceDrift{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-9px) rotate(4deg)}}
+@keyframes leafSpin{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(8deg)}}
+@media(max-width:700px){.spice-float{font-size:23px;opacity:.32}.spice-float.s1{left:3px}.spice-float.s2{right:2px}.spice-float.s3{left:4px}.spice-float.s4{right:5px}}
+</style>
+</head>
+
+<body>
+<div class="spice-float s1">🫙 <span class="leaf">🌿</span></div>
+<div class="spice-float s2">✨🌶️</div>
+<div class="spice-float s3">🧂 <span class="leaf">🌿</span></div>
+<div class="spice-float s4">🌾✨</div>
+
+<div class="wrap">
+<header>
+  <div class="shopname" id="shopNameView">عمده‌فروشی ادویه آذین</div>
+  <h1>ثبت سفارش عمده</h1>
+  <p>اطلاعات و سفارش خود را وارد کنید؛ پیام سفارش برای شرکت ارسال می‌شود.</p>
+</header>
+
+<div class="section-title">لیست سفارش</div>
+<div class="field">
+  <label for="orderText">نام ادویه و مقدار <span class="required">*</span></label>
+  <textarea id="orderText" maxlength="1800"
+    placeholder="مثلاً:
+زردچوبه ۵ کیلو
+دارچین ۲ کیلو
+زعفران ۲۰۰ گرم"></textarea>
+  <div class="sub">هر قلم را در یک خط بنویسید.</div>
+  <div class="counter"><span id="orderCount">۰</span> / ۱۸۰۰ کاراکتر</div>
+</div>
+
+<div class="section-title">مشخصات مشتری</div>
+
+<div class="field">
+  <label for="custName">نام و نام خانوادگی <span class="required">*</span></label>
+  <input type="text" id="custName" maxlength="80" autocomplete="name" placeholder="">
+</div>
+
+<div class="field">
+  <label for="custPhone">شماره تماس مشتری <span class="required">*</span></label>
+  <input type="tel" id="custPhone" maxlength="15" inputmode="tel" autocomplete="tel" placeholder="۰۹۱۲۱۲۳۴۵۶۷">
+
+</div>
+
+<div class="field">
+  <label for="custAddr">آدرس ارسال</label>
+  <input type="text" id="custAddr" maxlength="250" autocomplete="street-address" placeholder="آدرس، شهر یا منطقه">
+</div>
+
+
+<div class="notice">
+  پیامک به <strong id="companyNumberView">شماره شرکت</strong> آماده می‌شود.
+  شماره تماس مشتری فقط در متن سفارش برای شرکت نمایش داده خواهد شد.
+</div>
+
+<button class="send-btn" id="sendBtn" type="button" onclick="sendOrder()">ارسال سفارش با پیامک</button>
+<div class="hint">با زدن دکمه، برنامه پیامک گوشی باز می‌شود و متن آماده ارسال است.</div>
+<div id="status" class="status"></div>
+</div>
+
+<script>
+/* ================= تنظیمات شرکت ================= */
+const SMS_NUMBER = "+989360187359"; // شماره‌ای که سفارش باید به آن ارسال شود
+const SHOP_TITLE = "عمده‌فروشی ادویه آذین";
+
+/* ================================================ */
+
+const $ = id => document.getElementById(id);
+
+$("shopNameView").textContent = SHOP_TITLE;
+$("companyNumberView").textContent = "شماره شرکت";
+
+function toEnglishDigits(str){
+  return String(str)
+    .replace(/[۰-۹]/g,d=>"۰۱۲۳۴۵۶۷۸۹".indexOf(d))
+    .replace(/[٠-٩]/g,d=>"٠١٢٣٤٥٦٧٨٩".indexOf(d));
+}
+function toPersianDigits(str){
+  return String(str).replace(/\d/g,d=>"۰۱۲۳۴۵۶۷۸۹"[d]);
+}
+function normalizePhone(value){
+  let p = toEnglishDigits(value).replace(/[\s\-()]/g,"");
+  if(p.startsWith("+98")) p = "0" + p.slice(3);
+  if(p.startsWith("0098")) p = "0" + p.slice(4);
+  return p;
+}
+function validIranMobile(value){
+  const p = normalizePhone(value);
+  return /^09\d{9}$/.test(p);
+}
+function showStatus(message,type="error"){
+  const el=$("status");
+  el.textContent=message;
+  el.className="status "+type;
+}
+function hideStatus(){
+  $("status").className="status";
+  $("status").textContent="";
+}
+function buildOrderText(){
+  const name=$("custName").value.trim();
+  const phone=normalizePhone($("custPhone").value.trim());
+  const addr=$("custAddr").value.trim();
+  const order=$("orderText").value.trim();
+
+  const now=new Date();
+  const date=new Intl.DateTimeFormat("fa-IR",{
+    dateStyle:"short",timeStyle:"short"
+  }).format(now);
+
+  const orderId="ORD-"+Date.now().toString().slice(-8);
+
+  const lines=[
+    `سفارش جدید - ${SHOP_TITLE}`,
+    `کد سفارش: ${orderId}`,
+    `تاریخ: ${date}`,
+    "",
+    `نام مشتری: ${name}`,
+    `شماره تماس مشتری: ${phone}`,
+    addr ? `آدرس ارسال: ${addr}` : "آدرس ارسال: ثبت نشده",
+    "",
+    "اقلام سفارش:",
+    order
+  ].filter(Boolean);
+
+  return lines.join("\n");
+}
+function sendOrder(){
+  hideStatus();
+
+  const order=$("orderText").value.trim();
+  const name=$("custName").value.trim();
+  const phone=$("custPhone").value.trim();
+
+  if(!order){
+    showStatus("لطفاً لیست ادویه و مقدار سفارش را وارد کنید.");
+    $("orderText").focus(); return;
+  }
+  if(!name){
+    showStatus("لطفاً نام و نام خانوادگی مشتری را وارد کنید.");
+    $("custName").focus(); return;
+  }
+  if(!validIranMobile(phone)){
+    showStatus("شماره تماس معتبر نیست. شماره را مثل ۰۹۱۲۱۲۳۴۵۶۷ وارد کنید.");
+    $("custPhone").focus(); return;
+  }
+
+
+  const text=buildOrderText();
+  const isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+  const separator=isIOS ? "&" : "?";
+  const url=`sms:${SMS_NUMBER}${separator}body=${encodeURIComponent(text)}`;
+
+  showStatus("پیام سفارش آماده شد. برنامه پیامک گوشی در حال باز شدن است.","ok");
+  setTimeout(()=>{ window.location.href=url; },150);
+}
+
+$("orderText").addEventListener("input",()=>{
+  $("orderCount").textContent=toPersianDigits($("orderText").value.length);
+});
+</script>
+</body>
+                                                                     </html>
